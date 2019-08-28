@@ -107,6 +107,17 @@ export abstract class ExpressionModel extends ValidationBase implements Serializ
                 let message = ex.message;
                 let code = ErrorCode.EXPR_SYNTAX;
 
+                if (ex.type === "warning") {
+                    rej({
+                        type: ex.type,
+                        code: ErrorCode.EXPR_WARNING,
+                        loc: this.loc,
+                        message: message,
+                        evaluation: ex.evaluation
+                    });
+                    return;
+                }
+
                 if (ex.message.startsWith("Uncaught DataCloneError")) {
                     message = "Error: Return value should have transferable data (fully JSON-serializable)";
                     code = ErrorCode.EXPR_NOT_JSON;
@@ -123,7 +134,7 @@ export abstract class ExpressionModel extends ValidationBase implements Serializ
                         code = ErrorCode.EXPR_TYPE;
                     }
 
-                    rej(Object.assign({type: "warning", code}, err));
+                    rej(Object.assign({type: "error", code}, err));
                 }
             });
         });
