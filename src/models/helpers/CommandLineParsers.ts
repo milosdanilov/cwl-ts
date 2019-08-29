@@ -135,6 +135,9 @@ export class CommandLineParsers {
         return expr.evaluate(context).then(res => {
             return res === undefined ? "" : res;
         }, err => {
+            if (err.type === "warning") {
+                return err.evaluation === undefined ? "" : err.evaluation;
+            }
             return new CommandLinePart(`<${err.type} at ${err.loc}>`, err.type, loc);
         });
     }
