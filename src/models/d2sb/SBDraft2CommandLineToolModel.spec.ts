@@ -757,10 +757,8 @@ describe("SBDraft2CommandLineToolModel", () => {
             });
 
             tool.validate().then(() => {
-                expect(tool.warnings).to.be.empty;
-                expect(tool.errors).to.not.deep.equal([], "should have error");
-                expect(tool.errors.length).to.be.equal(2);
-                expect(tool.errors[1].loc).to.equal("document.baseCommand[1]", "location of error");
+                expect(tool.warnings).to.not.deep.equal([], "should have warning");
+                expect(tool.warnings[0].loc).to.equal("document.baseCommand[1]", "location of warning");
             }).then(done, done);
         });
     });

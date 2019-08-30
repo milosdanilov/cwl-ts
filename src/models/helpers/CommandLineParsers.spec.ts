@@ -7,7 +7,7 @@ import {V1CommandInputParameterModel} from "../v1.0";
 describe("CommandLineParsers", () => {
     describe("streams", () => {
 
-        it("should show a error if stdout expression is invalid", (done) => {
+        it("should show a warning if stdout expression is invalid", (done) => {
             const stdout = new SBDraft2ExpressionModel({
                 script: "job",
                 engine: "",
@@ -15,7 +15,7 @@ describe("CommandLineParsers", () => {
             }, "");
 
             CommandLineParsers.stream(stdout, {}, null, {}, "stdout", "stdout").then(function (res) {
-                expect(res.type).to.equal("error");
+                expect(res.type).to.equal("warning");
             }).then(done, done);
         });
     });
