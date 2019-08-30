@@ -107,13 +107,13 @@ export abstract class ExpressionModel extends ValidationBase implements Serializ
                 let message = ex.message;
                 let code = ErrorCode.EXPR_SYNTAX;
 
-                if (ex.type === "warning") {
+                if (ex.type === "warning" && ex.code === ErrorCode.EXPR_LINTER_WARNING) {
                     rej({
                         type: ex.type,
-                        code: ErrorCode.EXPR_WARNING,
+                        code: ex.code,
                         loc: this.loc,
                         message: message,
-                        evaluation: ex.evaluation
+                        payload: ex.payload
                     });
                     return;
                 }
@@ -134,7 +134,7 @@ export abstract class ExpressionModel extends ValidationBase implements Serializ
                         code = ErrorCode.EXPR_TYPE;
                     }
 
-                    rej(Object.assign({type: "error", code}, err));
+                    rej(Object.assign({type: "warning", code}, err));
                 }
             });
         });

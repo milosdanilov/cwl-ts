@@ -4,6 +4,7 @@ import {CommandLinePrepare} from "./CommandLinePrepare";
 import {TypeResolver} from "./TypeResolver";
 import {V1CommandArgumentModel} from "../v1.0/V1CommandArgumentModel";
 import {V1ExpressionModel} from "../v1.0/V1ExpressionModel";
+import {ErrorCode} from "./validation";
 
 export class CommandLineParsers {
 
@@ -135,8 +136,8 @@ export class CommandLineParsers {
         return expr.evaluate(context).then(res => {
             return res === undefined ? "" : res;
         }, err => {
-            if (err.type === "warning") {
-                return err.evaluation === undefined ? "" : err.evaluation;
+            if (err.type === "warning" && err.code === ErrorCode.EXPR_LINTER_WARNING) {
+                return err.payload.evaluation === undefined ? "" : err.payload.evaluation;
             }
             return new CommandLinePart(`<${err.type} at ${err.loc}>`, err.type, loc);
         });
