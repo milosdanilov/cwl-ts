@@ -30,6 +30,9 @@ export class CommandLineParsers {
                 .then(res => {
                     return new CommandLinePart(prefix + separator + res, cmdType, loc);
                 }, err => {
+                    if (err.type === "warning" && err.code === ErrorCode.EXPR_LINTER_WARNING) {
+                        return new CommandLinePart(prefix + separator + (err.payload.evaluation || ""), cmdType, loc);
+                    }
                     return new CommandLinePart(`<${err.type} at ${err.loc}>`, err.type, loc);
                 });
         }
@@ -63,6 +66,9 @@ export class CommandLineParsers {
                     .then(res => {
                         return new CommandLinePart(prefix + separator + res, type, loc);
                     }, err => {
+                        if (err.type === "warning" && err.code === ErrorCode.EXPR_LINTER_WARNING) {
+                            return new CommandLinePart(prefix + separator + (err.payload.evaluation || ""), type, loc);
+                        }
                         return new CommandLinePart(`<${err.type} at ${err.loc}>`, err.type, loc);
                     });
             }
@@ -112,6 +118,9 @@ export class CommandLineParsers {
                 .then(res => {
                     return new CommandLinePart(prefix + separator + res, cmdType, loc);
                 }, err => {
+                    if (err.type === "warning" && err.code === ErrorCode.EXPR_LINTER_WARNING) {
+                        return new CommandLinePart(prefix + separator + (err.payload.evaluation || ""), cmdType, loc);
+                    }
                     return new CommandLinePart(`<${err.type} at ${err.loc}>`, err.type, loc);
                 });
         }
